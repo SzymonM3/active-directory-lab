@@ -4,85 +4,54 @@
 
 This repository documents a virtual IT infrastructure lab built with Oracle VirtualBox.
 
-The environment consists of Windows Server 2022 and Windows 11 virtual machines configured to simulate a small domain-based network.
+The environment consists of two virtual machines running Windows Server 2022 and Windows 11 Pro. They are connected through an isolated VirtualBox Internal Network and configured as a domain-based environment.
 
-The lab is used to explore Windows Server administration, Active Directory Domain Services, DNS, network configuration, file sharing and access permissions.
+The lab is used to explore and document:
 
-The environment will be gradually extended with additional configurations and documented helpdesk incidents.
+- Windows Server administration
+- Active Directory Domain Services (AD DS)
+- DNS configuration and name resolution
+- Domain users and security groups
+- SMB file sharing
+- NTFS and share permissions
+- Windows client administration
+- Helpdesk troubleshooting scenarios
 
-## Environment Architecture
+The repository is gradually extended with infrastructure documentation and practical administration scenarios.
 
-The lab consists of two virtual machines connected through an isolated VirtualBox Internal Network.
+## Infrastructure Overview
 
-| Virtual Machine | Operating System | Hostname | Role |
-|---|---|---|---|
-| WS2022-LAB | Windows Server 2022 Standard Evaluation | LAB-DC01 | Domain Controller, DNS, File Server |
-| LAB-CLIENT01 | Windows 11 Pro | LAB-CLIENT01 | Domain Client |
-
-### Domain Information
-
-| Parameter | Value |
+| Component | Configuration |
 |---|---|
-| Domain Name | ad.lab.test |
-| NetBIOS Name | AD |
-| Forest Functional Level | Windows Server 2016 |
-| Domain Functional Level | Windows Server 2016 |
-| Domain Controller | LAB-DC01.ad.lab.test |
+| Virtualization Platform | Oracle VirtualBox |
+| Domain | `ad.lab.test` |
+| Domain Controller | `LAB-DC01` |
+| Domain Client | `LAB-CLIENT01` |
+| Network | `IT-LAB` |
+| Network Subnet | `192.168.50.0/24` |
 
-## Network Configuration
+The environment consists of:
 
-Both virtual machines use the VirtualBox Internal Network named `IT-LAB`.
+- **LAB-DC01** — Windows Server 2022, providing AD DS, DNS and File Server services.
+- **LAB-CLIENT01** — Windows 11 Pro, joined to the Active Directory domain.
 
-| Parameter | LAB-DC01 | LAB-CLIENT01 |
-|---|---|---|
-| IPv4 Address | 192.168.50.10 | 192.168.50.20 |
-| Subnet Mask | 255.255.255.0 | 255.255.255.0 |
-| DNS Server | 127.0.0.1 | 192.168.50.10 |
-| Default Gateway | Not configured | Not configured |
+## Infrastructure Diagram
 
-Both machines are configured with IPv4 addresses within the same /24 subnet.
+The diagram below presents the current lab topology.
 
-## Infrastructure Components
+See [Infrastructure Diagram](diagrams/infrastructure.md).
 
-### Active Directory Domain Services
+## Documentation
 
-- Domain: `ad.lab.test`
-- Domain Controller: `LAB-DC01`
-- Organizational Unit: `Domain Controllers`
-- User accounts managed through Active Directory
-- Custom security group: `GG_Ksiegowosc`
+Detailed configuration and architecture documentation is available below.
 
-### DNS
-
-The domain controller hosts Active Directory-integrated DNS zones, including:
-
-- `ad.lab.test`
-- `_msdcs.ad.lab.test`
-
-Root Hints are enabled. No manual DNS forwarder addresses are configured.
-
-### File Services
-
-The server provides an SMB network share:
-
-| Share Name | Local Path |
+| Document | Description |
 |---|---|
-| LabShare | C:\LabShare |
-
-Access is controlled through SMB share permissions and NTFS permissions.
-
-The custom security group `GG_Ksiegowosc` has Change permissions at the share level and Modify permissions at the NTFS level.
-
-## Virtual Machine Resources
-
-| Resource | WS2022-LAB | LAB-CLIENT01 |
-|---|---|---|
-| RAM | 4 GB | 4 GB |
-| Virtual CPUs | 2 | 2 |
-| Firmware | UEFI | UEFI |
-| TPM | Not configured | TPM 2.0 |
-| Secure Boot | Disabled | Enabled |
-| Network Adapter | Intel PRO/1000 MT Desktop | Intel PRO/1000 MT Desktop |
+| [Lab Architecture](docs/architecture.md) | Infrastructure topology, network and domain overview |
+| [Active Directory Configuration](docs/active-directory.md) | Domain structure, users, security groups and FSMO roles |
+| [DNS Configuration](docs/dns.md) | DNS zones, integration and forwarding configuration |
+| [File Server Configuration](docs/file-server.md) | SMB share and NTFS permissions |
+| [Virtual Machine Configuration](docs/virtual-machines.md) | VirtualBox settings and VM resources |
 
 ## Repository Structure
 
@@ -90,7 +59,13 @@ The custom security group `GG_Ksiegowosc` has Change permissions at the share le
 active-directory-lab/
 ├── README.md
 ├── docs/
+│   ├── architecture.md
+│   ├── active-directory.md
+│   ├── dns.md
+│   ├── file-server.md
+│   └── virtual-machines.md
 ├── diagrams/
+│   └── infrastructure.md
 ├── screenshots/
 │   ├── virtualbox/
 │   ├── server/
@@ -98,27 +73,19 @@ active-directory-lab/
 └── incidents/
 ```
 
-### Documentation
+## Helpdesk Incidents
 
-The `docs/` directory contains technical documentation describing the lab infrastructure and its configuration.
+The `incidents/` directory is reserved for practical helpdesk incidents and troubleshooting scenarios.
 
-### Diagrams
+Each incident will be documented separately, including the observed problem, investigation, troubleshooting steps and resolution where applicable.
 
-The `diagrams/` directory contains infrastructure and network topology diagrams.
-
-### Screenshots
-
-The `screenshots/` directory contains selected screenshots documenting the virtual machines and their configuration.
-
-### Incidents
-
-The `incidents/` directory is reserved for documented helpdesk incidents and troubleshooting scenarios.
-
-Additional incidents will be added as the lab develops.
+Additional scenarios will be added as the lab develops.
 
 ## Project Status
 
 **Status: In Progress**
 
-The basic domain environment has been configured. Further development will include additional Windows Server administration tasks, infrastructure configuration and documented helpdesk scenarios.
+The basic domain environment has been configured and documented.
+
+Current work focuses on expanding the infrastructure documentation and gradually adding practical Windows administration and helpdesk scenarios.
 
